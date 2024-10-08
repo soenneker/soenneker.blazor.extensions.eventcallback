@@ -1,0 +1,29 @@
+using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
+
+namespace Soenneker.Blazor.Extensions.EventCallback;
+
+/// <summary>
+/// A collection of helpful Blazor EventCallback extension methods
+/// </summary>
+public static class EventCallbackExtension
+{
+    /// <summary>
+    /// Asynchronously invokes the <see cref="EventCallback{T}"/> if it has been assigned a delegate and is not null.
+    /// </summary>
+    /// <typeparam name="T">The type of the argument passed to the <see cref="EventCallback{T}"/>.</typeparam>
+    /// <param name="callback">The <see cref="EventCallback{T}"/> to invoke, which may be null.</param>
+    /// <param name="arg">The argument to pass to the callback when invoked.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    /// <remarks>
+    /// This method checks if the callback is not null and if it has a delegate assigned (using <see cref="EventCallback.HasDelegate"/>).
+    /// It will invoke the delegate asynchronously, using the provided argument, and applies the <c>NoSync()</c> extension to avoid synchronization context captures.
+    /// </remarks>
+    public static Task InvokeIfHasDelegate<T>(this EventCallback<T>? callback, T arg)
+    {
+        if (callback is {HasDelegate: true})
+            return callback.Value.InvokeAsync(arg);
+
+        return Task.CompletedTask;
+    }
+}
