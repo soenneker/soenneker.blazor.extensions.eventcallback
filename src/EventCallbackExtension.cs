@@ -21,9 +21,16 @@ public static class EventCallbackExtension
     /// </remarks>
     public static Task InvokeIfHasDelegate<T>(this EventCallback<T> callback, T? arg)
     {
-        if (callback.HasDelegate)
-            return callback.InvokeAsync(arg);
+        return callback.HasDelegate ? callback.InvokeAsync(arg) : Task.CompletedTask;
+    }
 
-        return Task.CompletedTask;
+    /// <summary>
+    /// Invokes the specified <see cref="EventCallback"/> if it has a delegate assigned.
+    /// </summary>
+    /// <param name="callback">The <see cref="EventCallback"/> to invoke.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    public static Task InvokeIfHasDelegate(this Microsoft.AspNetCore.Components.EventCallback callback)
+    {
+        return callback.HasDelegate ? callback.InvokeAsync() : Task.CompletedTask;
     }
 }
