@@ -1,4 +1,4 @@
-# Contributing to Soenneker.Blazor.Extensions.EventCallback
+﻿# Contributing to Soenneker.Blazor.Extensions.EventCallback
 
 We're excited that you're interested in contributing!
 
