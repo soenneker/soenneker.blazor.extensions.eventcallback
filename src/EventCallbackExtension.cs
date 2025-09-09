@@ -17,7 +17,7 @@ public static class EventCallbackExtension
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     /// <remarks>
     /// This method checks if the callback is not null and if it has a delegate assigned (using <see cref="EventCallback.HasDelegate"/>).
-    /// It will invoke the delegate asynchronously, using the provided argument, and applies the <c>NoSync()</c> extension to avoid synchronization context captures.
+    /// It will invoke the delegate asynchronously, using the provided argument.
     /// </remarks>
     public static Task InvokeIfHasDelegate<T>(this EventCallback<T> callback, T? arg)
     {
