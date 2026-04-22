@@ -1,16 +1,15 @@
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Tests.HostedUnit;
 
 namespace Soenneker.Blazor.Extensions.EventCallback.Tests;
 
-[Collection("Collection")]
-public class EventCallbackExtensionTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public class EventCallbackExtensionTests : HostedUnitTest
 {
-    public EventCallbackExtensionTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public EventCallbackExtensionTests(Host host) : base(host)
     {
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
