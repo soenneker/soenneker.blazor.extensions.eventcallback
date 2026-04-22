@@ -38,7 +38,7 @@ jobs:
         run: dotnet build test/Soenneker.Blazor.Extensions.EventCallback.Tests/Soenneker.Blazor.Extensions.EventCallback.Tests.csproj --configuration Release --no-restore --verbosity minimal
 
       - name: Test
-        run: dotnet test test/Soenneker.Blazor.Extensions.EventCallback.Tests/Soenneker.Blazor.Extensions.EventCallback.Tests.csproj --configuration Release --no-build --no-restore --verbosity minimal
+        run: dotnet test --project test/Soenneker.Blazor.Extensions.EventCallback.Tests/Soenneker.Blazor.Extensions.EventCallback.Tests.csproj --configuration Release --no-build --no-restore --verbosity minimal
 
       - name: Pack
         run: dotnet pack src/Soenneker.Blazor.Extensions.EventCallback/Soenneker.Blazor.Extensions.EventCallback.csproj --configuration Release --no-build --no-restore --output . --verbosity minimal
