@@ -5,36 +5,42 @@
 
 # Soenneker.Blazor.Extensions.EventCallback
 
-A collection of helpful Blazor EventCallback extension methods.
+Small Blazor extensions that invoke an `EventCallback` only when its consumer assigned a delegate.
 
-## Install
+## Installation
 
 ```bash
 dotnet add package Soenneker.Blazor.Extensions.EventCallback
 ```
 
-## Quick start
+## Usage
 
-```csharp
-using Soenneker.Blazor.Extensions.EventCallback;
+The extension removes repeated `HasDelegate` checks from reusable components:
 
-EventCallback<T> callback = /* obtain from your application */;
-await callback.InvokeIfHasDelegate(/* supply arg */ default!);
+```razor
+@using Soenneker.Blazor.Extensions.EventCallback
+
+<button @onclick="Save">Save</button>
+
+@code {
+    [Parameter]
+    public EventCallback<Order> OnSaved { get; set; }
+
+    private async Task Save()
+    {
+        Order order = await SaveOrder();
+        await OnSaved.InvokeIfHasDelegate(order);
+    }
+}
 ```
 
-Asynchronously invokes the `EventCallback{T}` if it has been assigned a delegate and is not null.
+The non-generic overload works the same way:
 
-## What you get
+```csharp
+[Parameter]
+public EventCallback OnClosed { get; set; }
 
-- `EventCallbackExtension` — A collection of helpful Blazor EventCallback extension methods.
+await OnClosed.InvokeIfHasDelegate();
+```
 
-## API at a glance
-
-| API | What it does | Result / important behavior |
-| --- | --- | --- |
-| `EventCallbackExtension.InvokeIfHasDelegate(callback, arg)` | Asynchronously invokes the `EventCallback{T}` if it has been assigned a delegate and is not null. | A `Task` representing the asynchronous operation. |
-| `EventCallbackExtension.InvokeIfHasDelegate(callback)` | Invokes the specified `EventCallback` if it has a delegate assigned. | A `Task` representing the asynchronous operation. |
-
-## Important behavior
-
-- `EventCallbackExtension.InvokeIfHasDelegate(callback, arg)`: This method checks if the callback is not null and if it has a delegate assigned (using `EventCallback.HasDelegate`). It will invoke the delegate asynchronously, using the provided argument.
+When no delegate is assigned, both overloads return `Task.CompletedTask`. When a delegate is assigned, invocation follows normal Blazor `EventCallback.InvokeAsync` behavior, including renderer dispatch and exception propagation. Await the returned task when subsequent work depends on the callback completing.
